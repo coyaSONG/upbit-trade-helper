@@ -1,6 +1,9 @@
 ## Introduction
 
-Welcome to our automatic trading program for Upbit, built using Nextron. This application is primarily for educational purposes.
+Welcome to my automatic trading program for Upbit, built using Nextron.
+
+This application is primarily for educational purposes.
+
 For more information on Nextron, visit the [Nextron GitHub page](https://github.com/saltyshiomix/nextron).
 
 ## How to Use
