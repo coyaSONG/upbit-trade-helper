@@ -1,26 +1,18 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { ipcMain } from "electron";
+import axios from "axios";
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'POST') {
-    console.log('트레이딩뷰 웹훅 데이터:', req.body);
+  if (req.method === "POST") {
+    const message = req.body.message;
 
-    // TODO
-    // 매수 매도 로직을 api로 구현해서 훅에서 온 데이터 신호(buy or sell)에 따라 동작
-    // req.body의 값이 BUY라는 텍스트로 시작하면 매수 로직
-    if (req.body.startsWith('BUY')) {
-      console.log('매수 로직 실행');
-    }
+    console.log("트레이딩뷰 웹훅 데이터:", req.body);
 
-    // SELL 텍스트로 시작하면 매도 로직
-    if (req.body.startsWith('SELL')) {
-      console.log('매도 로직 실행');
-    }
-
-    res.status(200).json({ message: 'good' });
+    res.status(200).json({ message: "메시지가 전달되었습니다." });
   } else {
-    res.status(405).json({ message: 'bad' });
+    res.status(405).json({ message: "허용되지 않은 메소드" });
   }
 }

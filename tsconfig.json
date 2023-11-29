@@ -16,7 +16,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@hooks/*": ["renderer/hooks/*"]
+      "@hooks/*": ["renderer/hooks/*"],
+      "@utils/*": ["renderer/utils/*"]
     }
   },
   "exclude": ["node_modules", "renderer/next.config.js", "app", "dist"]

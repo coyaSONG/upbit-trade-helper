@@ -1,19 +1,30 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import useUpbitAccountInfo from '@hooks/useUpbitAccountInfo'
-
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+import useUpbitAccountInfo from "@hooks/useUpbitAccountInfo";
 
 export default function HomePage() {
-  const [message, setMessage] = React.useState('No message found')
+  const [message, setMessage] = React.useState("No message found");
   useUpbitAccountInfo();
-  
+
   React.useEffect(() => {
-    window.ipc.on('message', (message: string) => {
-      setMessage(message)
-    })
-  }, [])
+    // 클라이언트 사이드에서만 실행
+    if (typeof window !== "undefined" && window.require) {
+      const electron = window.require("electron");
+      const ipcRenderer = electron.ipcRenderer;
+
+      // 메인 프로세스로부터 메시지 수신
+      ipcRenderer.on("tradingview-message", (event, receivedMessage) => {
+        setMessage(receivedMessage);
+      });
+
+      // 컴포넌트 언마운트 시 이벤트 리스너 제거
+      return () => {
+        ipcRenderer.removeAllListeners("tradingview-message");
+      };
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -37,7 +48,7 @@ export default function HomePage() {
       <div>
         <button
           onClick={() => {
-            window.ipc.send('message', 'Hello')
+            // clickAccoutnInfoUseCallBack();
           }}
         >
           Test IPC
@@ -45,5 +56,5 @@ export default function HomePage() {
         <p>{message}</p>
       </div>
     </React.Fragment>
-  )
+  );
 }

@@ -15,3 +15,5 @@ export const useApiConfig = () => {
 
   return { server_url, token };
 };
+
+export default useApiConfig;
