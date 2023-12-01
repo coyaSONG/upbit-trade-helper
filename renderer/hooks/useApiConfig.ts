@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-const sign = require('jsonwebtoken').sign;
+import { v4 as uuidv4 } from "uuid";
+const sign = require("jsonwebtoken").sign;
 
 export const useApiConfig = () => {
   const access_key = process.env.NEXT_PUBLIC_UPBIT_OPEN_API_ACCESS_KEY;
@@ -11,9 +11,9 @@ export const useApiConfig = () => {
     nonce: uuidv4(),
   };
 
-  const token = sign(payload, secret_key);
+  const createToken = sign(payload, secret_key);
 
-  return { server_url, token };
+  return { server_url, createToken };
 };
 
 export default useApiConfig;
