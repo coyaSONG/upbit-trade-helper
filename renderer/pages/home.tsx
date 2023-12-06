@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import useUpbitAccountInfo from "@hooks/useUpbitAccountInfo";
+import axios from "axios";
 
 export default function HomePage() {
   const [message, setMessage] = React.useState("No message found");
@@ -26,6 +27,11 @@ export default function HomePage() {
     }
   }, []);
 
+  async function handleClickMarketList() {
+    const list = await axios.get("http://localhost:8888/api/market-list");
+    console.log("list", list);
+  }
+
   return (
     <React.Fragment>
       <Head>
@@ -48,7 +54,7 @@ export default function HomePage() {
       <div>
         <button
           onClick={() => {
-            // clickAccoutnInfoUseCallBack();
+            handleClickMarketList();
           }}
         >
           Test IPC

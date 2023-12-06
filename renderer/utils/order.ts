@@ -1,6 +1,5 @@
 import axios from "axios";
-import jwt from "jsonwebtoken";
-import querystring from "querystring";
+import useApiConfig from "@hooks/useApiConfig";
 
 export async function order(
   market: string,
@@ -10,6 +9,8 @@ export async function order(
   ord_type: "limit" | "price" | "market"
 ) {
   const url = "https://api.upbit.com/v1/orders";
+  const { createToken } = useApiConfig();
+
   const qs = {
     market: market,
     side: side,
@@ -18,16 +19,7 @@ export async function order(
     ord_type: ord_type,
   };
 
-  const query = querystring.encode(qs);
-  const payload = {
-    access_key: process.env.NEXT_PUBLIC_UPBIT_OPEN_API_ACCESS_KEY,
-    nonce: new Date().getTime(),
-    query: query,
-  };
-  const token = jwt.sign(
-    payload,
-    process.env.NEXT_PUBLIC_UPBIT_OPEN_API_SECRET_KEY
-  );
+  const token = createToken(qs);
 
   return await request(url, qs, token, "POST");
 }

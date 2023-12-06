@@ -1,22 +1,22 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import useApiConfig from "@hooks/useApiConfig";
-const request = require("request");
+import axios from "axios";
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const { server_url, createToken } = useApiConfig();
+  const { createToken } = useApiConfig();
 
   const options = {
-    url: server_url + "/v1/accounts",
-    headers: { Authorization: `Bearer ${createToken}` },
+    method: "GET",
+    url: "https://api.upbit.com/v1/accounts",
+    headers: { accept: "application/json", Authorization: createToken() },
   };
 
-  request(options, (error: any, response: any, body: any) => {
-    if (error) {
-      res
-        .status(500)
-        .json({ error: "An error occurred while fetching account info" });
-    } else {
-      res.status(200).json(JSON.parse(body));
-    }
-  });
+  axios
+    .request(options)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
 };
