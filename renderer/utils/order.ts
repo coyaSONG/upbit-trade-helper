@@ -28,11 +28,15 @@ export async function request(url, qs, token, method) {
   const options = {
     method: method,
     url: url,
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers: {
+      accept: "application/json",
+      "content-type": "application/json",
+      Authorization: token,
+    },
     data: method === "POST" ? qs : {},
     params: method === "GET" ? qs : {},
   };
-
+  
   try {
     const response = await axios(options);
     return response;
