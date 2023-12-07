@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).json({ error });
   }
 
-  const purchaseAmount = myRecentKRW * 0.99;
+  const purchaseAmount = myRecentKRW * 0.9995;
 
   try {
     const response = await order(market, null, purchaseAmount, type, "price");
