@@ -1,15 +1,15 @@
-import axios from "axios";
-import useApiConfig from "@hooks/useApiConfig";
+import useApiConfig from '@hooks/useCreateToken';
+import { request } from './request';
 
 export async function order(
   market: string,
-  volume: number | null,
-  price: number | null,
-  side: "bid" | "ask",
-  ord_type: "limit" | "price" | "market"
+  volume: string,
+  price: string,
+  side: 'bid' | 'ask',
+  ord_type: 'limit' | 'price' | 'market'
 ) {
-  const url = "https://api.upbit.com/v1/orders";
-  const { createToken } = useApiConfig();
+  const { createToken, server_url } = useApiConfig();
+  const url = `${server_url}/v1/orders`;
 
   const qs = {
     market: market,
@@ -21,30 +21,10 @@ export async function order(
 
   const token = createToken(qs);
 
-  return await request(url, qs, token, "POST");
-}
-
-export async function request(url, qs, token, method) {
-  const options = {
-    method: method,
+  return await request({
     url: url,
-    headers: {
-      accept: "application/json",
-      "content-type": "application/json",
-      Authorization: token,
-    },
-    data: method === "POST" ? qs : {},
-    params: method === "GET" ? qs : {},
-  };
-  
-  try {
-    const response = await axios(options);
-    return response;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw error;
-    } else {
-      throw new Error("Network or other error");
-    }
-  }
+    qs: qs,
+    token: token,
+    method: 'POST',
+  });
 }
